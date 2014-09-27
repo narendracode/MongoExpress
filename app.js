@@ -38,8 +38,8 @@ fs.readdirSync(__dirname + '/app/models').forEach(function (file) {
 require('./config/routes')(app);
 require('./config/express')(app);
 
-app.listen(port);
-console.log('Express app started on port ' + port);
+//app.listen(port);
+//console.log('Express app started on port ' + port);
 
 
 module.exports = app;

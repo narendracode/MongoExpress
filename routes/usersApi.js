@@ -14,17 +14,12 @@ router.use(function(req,res,next){
 
 /* GET users listing. */
 
-router.get('/', function(req, res) {
-  res.send('respond with a resource');
-});
-
-
 /* API */
-router.get('/api', function(req, res) {
-  res.json({ message: 'hooray! welcome to our api!' });	
-});
+router.get('/',users.getAll);
 
+router.post('/create',users.create);
 
-router.get('/create',users.create);
-
+router.get('/:user_id',users.get);
+router.put('/:user_id',users.update);
+router.delete('/:user_id',users.delete);
 module.exports = router;
