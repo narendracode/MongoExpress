@@ -5,12 +5,13 @@ var router = express.Router();
 var users = require('../app/controllers/userController');
 
 /* Middleware used for all requests */
+/*
 router.use(function(req,res,next){
 	//do loggin
 	console.log('Something is happening');	
 	next();
 });
-
+*/
 
 /* GET users listing. */
 

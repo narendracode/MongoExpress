@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-
+var bcrypt = require("bcrypt-nodejs");
 var UserSchema = new Schema({
    name: { type: String, default: '' },
    email: { type: String, default: '' },
@@ -9,11 +9,40 @@ var UserSchema = new Schema({
    hashed_password: { type: String, default: '' },
    salt: { type: String, default: '' },
    authToken: { type: String, default: '' },
-   facebook: {},
-   twitter: {},
-   github: {},
-   google: {},
-   linkedin: {}
+   local:{
+	   email: String,
+	   password: String
+   },
+   facebook: {
+	   id: String,
+	   token: String,
+	   email: String,
+	   name: String
+   },
+   twitter: {
+	   id: String,
+	   token: String,
+	   email: String,
+	   name: String
+   },
+   github: {
+           id: String,
+	   token: String,
+	   email: String,
+	   name: String
+   },
+   google: {
+           id: String,
+	   token: String,
+	   email: String,
+	   name: String
+   },
+   linkedin: {
+           id: String,
+	   token: String,
+	   email: String,
+	   name: String
+   }
 });
 
 UserSchema.virtual('password').set(function(password) {
@@ -41,7 +70,14 @@ UserSchema.pre('save', function(next) {
 */
 /* methods */
 UserSchema.methods = {
-
+  //generating a hash
+  generateHash: function(password) {
+	  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+  },
+  // checking if password is valid
+  validPassword: function(password) {
+	  return bcrypt.compareSync(password, this.local.password);
+  },
   /**
    * Authenticate - check if the passwords are the same
    *
