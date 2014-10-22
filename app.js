@@ -12,15 +12,36 @@ var session = require('express-session');
 
 var config = require('./config/config');
 var mongoose = require("mongoose");
+
+var multer  = require('multer');
 var app = express();
 
 var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(multer({ 
+    dest: './uploads/',
+    rename: function (fieldname, filename) {
+        return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+    },
+    onFileUploadStart: function (file) {
+        console.log(file.fieldname + ' is starting ...')
+    },
+    onFileUploadData: function (file, data) {
+        console.log(data.length + ' of ' + file.fieldname + ' arrived')
+    },
+    onFileUploadComplete: function (file) {
+        console.log(file.fieldname + ' uploaded to  ' + file.path)
+    }
+}));
+
+
 app.set('views', path.join(__dirname, 'app/views'));
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../MongoExpressUploads')));
+
 app.use(cookieParser()); // read cookies (needed for auth)
 app.set('view engine', 'ejs'); // set up ejs for templating
 

@@ -14,6 +14,7 @@ module.exports.signup = new LocalStrategy({
 		process.nextTick(function() {
 			// find a user whose email is the same as the forms email
 			// we are checking to see if the user trying to login already exists
+            
 			User.findOne({ 'local.email' :  email },function(err,user){
 				if(err)
 					return done(err);
@@ -26,7 +27,7 @@ module.exports.signup = new LocalStrategy({
 					// set the user's local credentials
 					newUser.local.email    = email;
 					newUser.local.password = newUser.generateHash(password);
-
+                    newUser.displayName = req.body.displayName;
 					// save the user
 					 newUser.save(function(err) {
 						if (err)

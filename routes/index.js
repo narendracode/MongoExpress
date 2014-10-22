@@ -6,14 +6,15 @@ var passport = require('passport');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Node Authentication' });
+  res.render('index', { title: 'Kuwait Classified Application',path : './' });
 });
 
 router.get('/login', function(req, res) {
   // render the page and pass in any flash data if it exists
   res.render('login', { 
 	  title: 'Login',
-	  message: req.flash('loginMessage')
+	  message: req.flash('loginMessage'),
+      path: './' 
 	  });
 });
 
@@ -47,7 +48,11 @@ router.post('/signup',passport.authenticate('local-signup',{
 // we will use route middleware to verify this (the isLoggedIn function)
 router.get('/profile', isLoggedIn, function(req, res) {
 	res.render('profile.ejs', {
-		user : req.user // get the user out of session and pass to template
+		user : req.user, // get the user out of session and pass to template
+        title: "Kuwait Classified App",
+        path : './',
+        pp: 'hello pp',
+        urlPath : '/profile'
 	});
 });
 
@@ -97,4 +102,6 @@ function isLoggedIn(req, res, next) {
 	// if they aren't redirect them to the home page
 	res.redirect('/');
 }
+
+
 module.exports = router;

@@ -4,21 +4,15 @@ var router = express.Router();
 /* get the controllers */
 var users = require('../app/controllers/userController');
 
-/* Middleware used for all requests */
-router.use(function(req,res,next){
-	//do loggin
-	console.log('Something is happening');	
-	next();
-});
-
-
+var loginUtil = require('../app/utils/loginUtil');
 /* GET users listing. */
-
 router.get('/', function(req, res) {
   res.send('respond with a resource');
 });
 
-
+router.get('/:id/settings',loginUtil.isLoggedIn,loginUtil.selfLoggedIn,users.getSettings);
+router.post('/:id/settings',loginUtil.isLoggedIn,loginUtil.selfLoggedIn,users.saveSettings);
+router.post('/profile_pic/upload',users.uploadProfilePic);
 /* API */
 router.get('/api', function(req, res) {
   res.json({ message: 'hooray! welcome to our api!' });	

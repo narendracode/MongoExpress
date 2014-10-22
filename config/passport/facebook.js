@@ -7,8 +7,8 @@ var User = mongoose.model('User');
 */
 
 module.exports = new FacebookStrategy({
-	clientID: '715698011832888',
-	clientSecret: '0014b4c9be514c7caba2b36a613da02f',
+	clientID: '#########',
+	clientSecret: '#############',
 	callbackURL: 'http://localhost:3000/auth/facebook/callback'
 	},
 	// facebook will send back the token and profile

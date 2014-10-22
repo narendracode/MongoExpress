@@ -1,3 +1,3 @@
 module.exports = {
-   db: 'mongodb://localhost/mongoExpress_prod'
+   db: 'mongodb://192.168.0.18/mongoExpress_prod'
 };

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var ObjectId = require('mongoose').Types.ObjectId;
+var fs = require('fs');
 exports.create = function(req,res){
    var user = new User({
       name:"Narendra",
@@ -59,6 +60,93 @@ exports.get = function(req,res){
 	});*/
 	
 };
+
+
+exports.getSettings = function(req,res){
+    try{
+        var id = new ObjectId(req.params.id);
+        User.findById(id,function(err,user){
+		if(err){
+			res.send(err);
+		}else{
+            res.render('settings.ejs',{
+                title: 'Settings',
+                user: user,
+                path: '../../',
+                urlPath: '/user'
+            });
+        }
+        });
+	   
+    }catch(e){
+            res.send(404);
+    }
+};
+
+
+exports.saveSettings = function(req,res){
+    try{
+        var id = new ObjectId(req.params.id);
+        User.findById(id,function(err,user){
+		if(err){
+			res.send(err);
+		}
+        user.displayName = req.body.displayName;
+        user.local.email = req.body.email;
+        req.user = user;
+        user.save(function(err){
+            if(err)
+                res.send(err);
+             res.render('settings.ejs',{
+                title: 'Settings',
+                user: user,
+                path: '../../',
+                urlPath: '/user'
+            });
+        }); 
+        });
+    }catch(e){
+        res.send(404);
+    }
+};
+
+exports.uploadProfilePic = function(req,res){
+    // get the temporary location of the file
+    console.log('####### files:'+req.body.userPhoto);
+    var tmp_path = req.files.userPhoto.path;
+    // set where the file should actually exists - in this case it is in the "images" directory
+    var target_path = '/Users/narendra/Documents/Workspaces/NodeExpressWorkspace/MongoExpressUploads/profile_pic/' + req.files.userPhoto.name;
+    // move the file from the temporary location to the intended location
+    fs.rename(tmp_path, target_path, function(err) {
+        if (err) throw err;
+        // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
+        fs.unlink(tmp_path, function() {
+            if (err) {
+                throw err;
+            }else{
+                //  res.send('File uploaded to: ' + target_path + ' - ' + req.files.thumbnail.size + ' bytes');
+                var id = new ObjectId(req.user._id);
+                User.findById(id,function(err,user){
+                    if(err){
+                        res.send(err);
+                    }
+                    user.profile_pic = req.files.userPhoto.name;
+                    req.user = user;
+                    user.save(function(err){
+                        if(err)
+                            res.send(err);
+                            res.render('settings.ejs',{
+                                title: 'Settings',
+                                user: user,
+                                path: '../../',
+                                urlPath: '/user'
+                            });
+                        });
+                });
+             };
+            });
+        });
+  };
 
 
 exports.update = function(req,res){

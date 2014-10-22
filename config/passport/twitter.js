@@ -3,9 +3,9 @@ var User = mongoose.model('User');
 var TwitterStrategy  = require('passport-twitter').Strategy;
 
 module.exports = new TwitterStrategy({
-			'consumerKey'    : 'fTyeNKkFPlKE7iZ28XEPHvpq4',
-			'consumerSecret' : 'bDNbpzk9SGCUP5RtGIWeG1apleNcET9qwgFXiRZSN5id6PlwFV',
-			'callbackURL'    : 'http://172.23.206.137:3000/auth/twitter/callback'
+			'consumerKey'    : '##########',
+			'consumerSecret' : '###########',
+			'callbackURL'    : 'http://172.23.206.183:3000/auth/twitter/callback'
 		},
 		function(token, tokenSecret, profile, done) {
 			// make the code asynchronous
